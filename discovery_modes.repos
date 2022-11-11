@@ -19,3 +19,7 @@ repositories:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
     version: poc/ros2-iron-discovery-options
+  ros/ros_environment:
+    type: git
+    url: https://github.com/ros/ros_environment.git
+    version: gbiggs/discovery-peers-specification
