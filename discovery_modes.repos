@@ -1,7 +1,7 @@
 repositories:
   rcl:
     type: git
-    url: https://github.com/ros2/rcl.git
+    url: https://github.com/arjo129/rcl.git
     version: gbiggs/discovery-peers-specification
   rmw:
     type: git
