@@ -321,8 +321,8 @@ repositories:
     version: rolling
   ros2/ros2cli:
     type: git
-    url: https://github.com/ros2/ros2cli.git
-    version: rolling
+    url: https://github.com/arjo129/ros2cli.git
+    version: arjo/feat/timeout
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git

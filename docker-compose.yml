@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  ros2container1:
+    image: "ros2_test_env"
+    volumes:
+      - ./scripts:/scripts
+      - ./results:/results
+    entrypoint: /scripts/rosnode1.bash
+    networks:
+      test_network:
+        ipv4_address: 10.0.0.2
+    environment:
+      - RES_DIR=/results/container1
+
+  ros2container2:
+    image: "ros2_test_env"
+    volumes:
+      - ./scripts:/scripts
+      - ./results:/results
+    entrypoint: /scripts/rossub_once.bash
+    networks:
+      test_network:
+        ipv4_address: 10.0.0.3
+    environment:
+      - RES_DIR=/results/container2
+
+  ros2container3:
+    image: "ros2_test_env"
+    volumes:
+      - ./scripts:/scripts
+      - ./results:/results
+    entrypoint: /scripts/rossub_once.bash
+    networks:
+      test_network:
+        ipv4_address: 10.0.0.4
+    environment:
+      - RES_DIR=/results/container3
+
+networks:
+  test_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
+
