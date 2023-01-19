@@ -10,6 +10,7 @@ services:
       test_network:
         ipv4_address: 10.0.0.2
     environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - RES_DIR=/results/container1
 
   ros2container2:
@@ -22,6 +23,7 @@ services:
       test_network:
         ipv4_address: 10.0.0.3
     environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - RES_DIR=/results/container2
 
   ros2container3:
@@ -34,6 +36,7 @@ services:
       test_network:
         ipv4_address: 10.0.0.4
     environment:
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - RES_DIR=/results/container3
 
 networks:
