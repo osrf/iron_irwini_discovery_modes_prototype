@@ -322,7 +322,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/arjo129/ros2cli.git
-    version: arjo/feat/timeout
+    version: arjo/feat/max_wait
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git

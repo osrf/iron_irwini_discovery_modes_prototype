@@ -6,12 +6,14 @@ services:
       - ./scripts:/scripts
       - ./results:/results
     entrypoint: /scripts/rosnode1.bash
+    hostname: container1
+    environment:
+      - RES_DIR=${RES_DIR}
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=${RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET}
+      - RMW_STATIC_PEERS=${RMW_STATIC_PEERS}
     networks:
       test_network:
         ipv4_address: 10.0.0.2
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - RES_DIR=/results/container1
 
   ros2container2:
     image: "ros2_test_env"
@@ -19,25 +21,14 @@ services:
       - ./scripts:/scripts
       - ./results:/results
     entrypoint: /scripts/rossub_once.bash
+    hostname: container2
+    environment:
+      - RES_DIR=${RES_DIR}
+      - ROS_AUTOMATIC_DISCOVERY_RANGE=${RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET}
+      - RMW_STATIC_PEERS=${RMW_STATIC_PEERS}
     networks:
       test_network:
         ipv4_address: 10.0.0.3
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - RES_DIR=/results/container2
-
-  ros2container3:
-    image: "ros2_test_env"
-    volumes:
-      - ./scripts:/scripts
-      - ./results:/results
-    entrypoint: /scripts/rossub_once.bash
-    networks:
-      test_network:
-        ipv4_address: 10.0.0.4
-    environment:
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - RES_DIR=/results/container3
 
 networks:
   test_network:
