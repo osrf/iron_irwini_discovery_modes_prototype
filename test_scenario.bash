@@ -13,11 +13,3 @@ mkdir -p $1/.ros_network_playground
 cp $SCRIPT_DIR/Dockerfile $1/.ros_network_playground
 cd $1
 docker build --build-arg SOURCE_DIR=. -t ros2_test_env -f .ros_network_playground/Dockerfile .
-
-
-cd $SCRIPT_DIR
-mkdir -p results
-docker-compose up
-docker-compose down
-
-cd $CURR_DIR
