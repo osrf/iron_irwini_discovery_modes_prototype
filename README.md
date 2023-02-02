@@ -10,7 +10,7 @@ Additionally it assumes a checkout from the "discovery_modes_full.repos"
 
 One can test various scenarios use cases using the script and the `docker-compose.yml`. To get started simply run:
 ```
-./test_scenario.bash <path to your ros2 checkout>
+./test_scenario.bash <path to your ros2 build workspace>
 ```
 This will build a docker image and run a test scenario where a container
 publishes a "Hello" message from a test set up. All containers listen on this setup and report their results to a `results` folder. In this repository. You will see the output of `rostopic echo /test_topic` from each container in the results folder.
