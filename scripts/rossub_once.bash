@@ -5,4 +5,4 @@ if [[ ! -z "${RMW_STATIC_PEERS}" ]]; then
     echo "Setting static peers"
     export ROS_STATIC_PEERS=${RMW_STATIC_PEERS}
 fi
-ros2 topic echo --timeout 10 --once /test_topic std_msgs/String > /results/$(hostname)
+ros2 topic echo --timeout 15 --once /test_topic std_msgs/String > /results/$(hostname)
