@@ -44,5 +44,6 @@ for scenario1 in scenarios/*; do
     done
 done
 rm -rf docker-compose.yml
+python3 report_gen.py
 
 cd $CURR_DIR

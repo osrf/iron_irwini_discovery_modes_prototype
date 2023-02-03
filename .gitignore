@@ -2,3 +2,4 @@
 *.swo
 results/
 docker-compose.yml
+*.pyc
