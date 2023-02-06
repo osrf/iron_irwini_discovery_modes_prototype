@@ -1,27 +1,31 @@
 version: "3.9"
 services:
-  ros2container1:
+  publisher_container:
     image: "ros2_test_env"
     volumes:
       - ./scripts:/scripts
-      - ./results/SCENARIO_NAME:/results/
+      - ./results/otherhost/SCENARIO_NAME:/results
       - ROS_BUILD_WS:/ros
-    entrypoint: /scripts/rosnode1.bash
-    hostname: container1
+    entrypoint: /scripts/publisher.bash
+    hostname: publisher
     env_file: SCENARIO1_FILE
+    environment:
+        RMW_IMPLEMENTATION: "CHOSEN_RMW_IMPLEMENTATION"
     networks:
       test_network:
         ipv4_address: 10.0.0.2
 
-  ros2container2:
+  subscriber_container:
     image: "ros2_test_env"
     volumes:
       - ./scripts:/scripts
-      - ./results/SCENARIO_NAME:/results
+      - ./results/otherhost/SCENARIO_NAME:/results
       - ROS_BUILD_WS:/ros
-    entrypoint: /scripts/rossub_once.bash
-    hostname: container2
+    entrypoint: /scripts/subscriber.bash
+    hostname: subscriber
     env_file: SCENARIO2_FILE
+    environment:
+        RMW_IMPLEMENTATION: "CHOSEN_RMW_IMPLEMENTATION"
     networks:
       test_network:
         ipv4_address: 10.0.0.3
