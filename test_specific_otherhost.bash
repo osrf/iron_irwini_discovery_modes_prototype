@@ -2,7 +2,7 @@
 
 ## Check usage
 if [ "$#" != "3" ]; then
-    echo "Usage: ./test_specific_scenario.bash <ros2 build workspace> <env file publisher> <env_file_subsciber>"
+    echo "Usage: ./test_specific_scenario.bash <ros2 build workspace> <env file publisher> <env_file_subsciber> [rmw_middleware]"
     exit 1
 fi
 
@@ -11,6 +11,8 @@ then
     echo "Path must contain prebuilt colcon work space"
     exit 1
 fi
+
+rmw_implementation=$4
 
 ## Common environment variables
 CURR_DIR=$(pwd)
@@ -24,21 +26,22 @@ docker build . -t ros2_test_env
 mkdir -p results
 
 ## Iterate through scenarios
-SCENARIO1=$2
-dirname=`grep RES_DIR $scenario1`
-dirname=$(echo $dirname | sed s/RES_DIR=//g)
-mkdir -p results/$dirname
+scenario1=$2
+dirname1=`grep RES_DIR $scenario1`
+dirname1=$(echo $dirname1 | sed s/RES_DIR=//g)
+mkdir -p results/$dirname1
 
-SCENARIO1=$3
+scenario2=$3
 dirname2=`grep RES_DIR $scenario2`
 dirname2=$(echo $dirname2 | sed s/RES_DIR=//g)
 
 cat template/docker-compose.yml.template | sed s+ROS_BUILD_WS+$1+g > docker-compose.yml
-sed -i s+SCENARIO2_FILE+$scenario2+g docker-compose.yml
 sed -i s+SCENARIO1_FILE+$scenario1+g docker-compose.yml
-sed -i s+SCENARIO_NAME+$dirname/$dirname2+g docker-compose.yml
+sed -i s+SCENARIO2_FILE+$scenario2+g docker-compose.yml
+sed -i s+SCENARIO_NAME+$dirname1/$dirname2+g docker-compose.yml
+sed -i s+CHOSEN_RMW_IMPLEMENTATION+$rmw_implementation+g docker-compose.yml
 
-mkdir -p results/$dirname/$dirname2/
+mkdir -p results/$dirname1/$dirname2/
 echo "Loading scenario $scenario1 and $scenario2"
 docker-compose up
 docker-compose down
