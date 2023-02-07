@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  samehost_container:
+    image: "ros2_test_env"
+    volumes:
+      - ./scripts:/scripts
+      - ./results/samehost/SCENARIO_NAME:/results
+      - ROS_BUILD_WS:/ros
+    entrypoint: /scripts/samehost.bash
+    hostname: samehost
+    env_file: SCENARIO_FILE
+    environment:
+        RMW_IMPLEMENTATION: "CHOSEN_RMW_IMPLEMENTATION"
+    networks:
+      test_network:
+        ipv4_address: 10.0.0.2
+
+networks:
+  test_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
