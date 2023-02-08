@@ -261,8 +261,8 @@ repositories:
     version: rolling
   ros2/rcl:
     type: git
-    url: https://github.com/arjo129/rcl.git
-    version: gbiggs/discovery-peers-specification
+    url: https://github.com/mxgrey/rcl.git
+    version: discovery-peers-specification
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -321,8 +321,8 @@ repositories:
     version: rolling
   ros2/ros2cli:
     type: git
-    url: https://github.com/ros2/ros2cli.git
-    version: rolling
+    url: https://github.com/arjo129/ros2cli.git
+    version: arjo/feat/max_wait_time_clean
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
