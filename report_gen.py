@@ -28,15 +28,10 @@ for scenario in os.listdir("scenarios"):
 
 
 def samehost_expectation(k1, k2):
-    (static_peers1, disc_range1) = k1
-    (static_peers2, disc_range2) = k2
-    # If the static peer is set for the localhost, then discovery within
-    # localhost should always succeed.
-    if static_peers1 == STATIC_DEFINED or static_peers2 == STATIC_DEFINED:
-        return True
+    (_, disc_range1) = k1
+    (_, disc_range2) = k2
 
-    # If the static peer is not set for the localhost and the range is off, then
-    # discovery within localhost should never succeed.
+    # If the range is off, then discovery should never succeed.
     if disc_range1 == 'OFF' or disc_range2 == 'OFF':
         return False
 
@@ -47,8 +42,13 @@ def samehost_expectation(k1, k2):
 def otherhost_expectation(k1, k2):
     (static_peers1, disc_range1) = k1
     (static_peers2, disc_range2) = k2
-    # If the static peer is set on either end, then discovery across the hosts
-    # should always succeed.
+
+    # If the range is off, then discovery should never succeed.
+    if disc_range1 == 'OFF' or disc_range2 == 'OFF':
+        return False
+
+    # If the static peer is set on either end, and neither range is OFF then
+    # discovery across the hosts should always succeed.
     if static_peers1 == STATIC_DEFINED or static_peers2 == STATIC_DEFINED:
         return True
 
