@@ -46,7 +46,7 @@ docker-compose up
 docker-compose down
 
 
-# rm -rf docker-compose.yml
+rm -rf docker-compose.yml
 python3 report_gen.py
 
 cd $CURR_DIR
