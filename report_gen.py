@@ -28,15 +28,10 @@ for scenario in os.listdir("scenarios"):
 
 
 def samehost_expectation(k1, k2):
-    (static_peers1, disc_range1) = k1
-    (static_peers2, disc_range2) = k2
-    # If the static peer is set for the localhost, then discovery within
-    # localhost should always succeed.
-    if static_peers1 == STATIC_DEFINED or static_peers2 == STATIC_DEFINED:
-        return True
+    (_, disc_range1) = k1
+    (_, disc_range2) = k2
 
-    # If the static peer is not set for the localhost and the range is off, then
-    # discovery within localhost should never succeed.
+    # If the range is off, then discovery should never succeed.
     if disc_range1 == 'OFF' or disc_range2 == 'OFF':
         return False
 
@@ -47,23 +42,23 @@ def samehost_expectation(k1, k2):
 def otherhost_expectation(k1, k2):
     (static_peers1, disc_range1) = k1
     (static_peers2, disc_range2) = k2
-    # If the static peer is set on either end, then discovery across the hosts
-    # should always succeed.
-    if static_peers1 == STATIC_DEFINED or static_peers2 == STATIC_DEFINED:
-        return True
 
-    # If the static peer is not set across hosts and either's range is off, then
-    # discovery across hosts should never succeed.
+    # If the range is off, then discovery should never succeed.
     if disc_range1 == 'OFF' or disc_range2 == 'OFF':
         return False
 
-    # If the static peer is not set across hosts and either's range is only
-    # localhost, then discovery across hosts should never succeed.
-    if disc_range1 == 'LOCALHOST' or disc_range2 == 'LOCALHOST':
-        return False
+    # If the static peer is set on either end, and neither range is OFF then
+    # discovery across the hosts should always succeed.
+    if static_peers1 == STATIC_DEFINED or static_peers2 == STATIC_DEFINED:
+        return True
 
-    # In all other situations, discovery across hosts should succeed.
-    return True
+    # If both of the hosts have subnet discovery turned on, then discovery
+    # across hosts should succeed.
+    if disc_range1 == 'SUBNET' and disc_range2 == 'SUBNET':
+        return True
+
+    # In all other situations, discovery across hosts should fail.
+    return False
 
 
 samehost_matrix = {}
@@ -99,8 +94,19 @@ for conf1_name in fields:
 
         k1 = fields[conf1_name]
         k2 = fields[conf2_name]
-        samehost_matrix.setdefault(k1, {})[k2] = received_samehost == samehost_expectation(k1, k2)
-        otherhost_matrix.setdefault(k1, {})[k2] = received_otherhost == otherhost_expectation(k1, k2)
+
+        if received_samehost is None:
+            samehost_outcome = None
+        else:
+            samehost_outcome = received_samehost == samehost_expectation(k1, k2)
+        samehost_matrix.setdefault(k1, {})[k2] = samehost_outcome
+
+        if received_otherhost is None:
+            otherhost_outcome = None
+        else:
+            otherhost_outcome = received_otherhost == otherhost_expectation(k1, k2)
+        otherhost_matrix.setdefault(k1, {})[k2] = otherhost_outcome
+
 
 def column_text_widths(keys):
     static_peers_len = 0
@@ -141,8 +147,10 @@ def display_table(matrix):
 
         line += disc_range1 + " " * (disc_width - len(disc_range1))
         for key2 in keys:
-            received = matrix[key1][key2]
-            if received:
+            outcome = matrix[key1][key2]
+            if outcome is None:
+                line += '?'+" " * (disc_width - 1)
+            elif outcome:
                 line += u'\u2713'+" " * (disc_width - 1)
             else:
                 line += u'\u2717'+" " * (disc_width - 1)
